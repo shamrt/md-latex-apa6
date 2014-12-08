@@ -1,4 +1,4 @@
-mmd-latex-apa6
+md-latex-apa6
 ==============
 
 A personal template for writing essays and manuscripts in MultiMarkdown, then converting to LaTeX (esp. APA style [6th edition]).
