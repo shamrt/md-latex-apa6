@@ -1,3 +1,10 @@
+## Project-generated files:
+/build
+/etc/*.csl
+
+## Rake files:
+.rake_tasks~
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -107,3 +114,6 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+
+# System files:
+.DS_Store

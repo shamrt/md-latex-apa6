@@ -9,8 +9,8 @@ The intention is to clone this repository in order to get started on new manuscr
 Requirements
 ------------
 
-- [MultiMarkdown](http://fletcherpenney.net/multimarkdown/)
 - [TeX Live 2013](https://www.tug.org/texlive/)
+    - [apa6 package](http://www.ctan.org/pkg/apa6)
     - Note: TeX Live 2014 should work as well, but is not in stable release as of this writing.
 - [Ruby >= 1.8.7](https://www.ruby-lang.org/en/)
     - [rake](https://rubygems.org/gems/rake)
@@ -19,4 +19,3 @@ Requirements
 Optional:
 
 - [Skim](http://skim-app.sourceforge.net/)
-

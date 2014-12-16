@@ -1,0 +1,192 @@
+\documentclass[$if(doctype)$$doctype$,$else$man,$endif$$if(natbib)$natbib,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{apa6}
+
+% Use default packages for APA setup
+\usepackage{fancyvrb}           % Allow \verbatim et al. in footnotes
+\VerbatimFootnotes % allows verbatim text in footnotes
+
+\usepackage{longtable, booktabs} % Better tables
+\usepackage{tabulary}           % Support longer table cells
+\usepackage[utf8]{inputenc}     % For UTF-8 support
+\usepackage[T1]{fontenc}        % Use T1 font encoding for accented characters
+\usepackage{color}              % Allow for color (annotations)
+\usepackage{url}                % Allow for URLs
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+
+% Graphics
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+$if(epigraph)$
+% TODO: Typesetting for epigraphs
+\usepackage{epigraph}
+$endif$
+
+$if(endnotes)$
+% Change all footnotes in document to endnotes
+\usepackage{endnotes}
+\let\footnote=\endnote
+
+% Append endnotes
+\newpage
+\begingroup
+  \parindent 0pt
+  \parskip 2ex
+  \def\enotesize{\normalsize}
+  \theendnotes
+\endgroup
+$endif$
+
+$if(natbib)$
+\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+$endif$
+
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={$author-meta$},
+            pdftitle={$title-meta$},
+            colorlinks=true,
+            citecolor=$if(citecolor)$$citecolor$$else$blue$endif$,
+            urlcolor=$if(urlcolor)$$urlcolor$$else$blue$endif$,
+            linkcolor=$if(linkcolor)$$linkcolor$$else$magenta$endif$,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+
+$if(links-as-notes)$
+% Make links footnotes instead of hotlinks:
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+$if(strikeout)$
+\usepackage[normalem]{ulem}
+% avoid problems with \sout in headers with hyperref:
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
+$endif$
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+$if(numbersections)$
+\setcounter{secnumdepth}{5}
+$else$
+\setcounter{secnumdepth}{0}
+$endif$
+
+
+% Front matter
+%------------------------------------------------------------------------------
+
+$if(title)$
+\title{$title$$if(subtitle)$\\\vspace{0.5em}{\large $subtitle$}$endif$}
+$endif$
+\shorttitle{$if(shorttitle)$$shorttitle$$else$$title$$endif$}
+
+$if(author)$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+$endif$
+$if(affiliation)$
+\affiliation{$affiliation$}
+$endif$
+
+\leftheader{$author$}
+\rightheader{$if(shorttitle)$$shorttitle$$else$$title$$endif$}
+
+$if(manuscript)$
+\note{
+\begin{flushleft}
+$author$ \\
+$if(affiliation)$$affiliation$ \\$endif$
+$if(address)$$address$ \\$endif$
+$if(email)$Email: $email$ \\$endif$
+$if(date)$
+$date$
+$else$
+\today
+$endif$
+\end{flushleft}
+}
+$else$
+\note{Draft of \today}
+$endif$
+
+$if(acknowledgements)$
+\acknowledgements{$acknowledgements$}
+$endif$
+$if(abstract)$
+\abstract{$abstract$}
+$endif$
+$if(authornote)$
+\authornote{$authornote$}
+$endif$
+\keywords{$for(keywords)$$keywords$$sep$, $endfor$}
+
+$for(header-includes)$
+  $header-includes$
+$endfor$
+
+% Main matter
+%------------------------------------------------------------------------------
+
+% Title Page
+\begin{document}
+$if(title)$
+\maketitle
+$endif$
+\raggedbottom
+
+$for(include-before)$
+$include-before$
+$endfor$
+
+$if(toc)$
+{
+\hypersetup{linkcolor=black}
+\setcounter{tocdepth}{$toc-depth$}
+\tableofcontents
+}
+$endif$
+$if(lot)$
+\listoftables
+$endif$
+$if(lof)$
+\listoffigures
+$endif$
+
+$body$
+
+$if(natbib)$
+$if(biblio-files)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+\bibliography{$biblio-files$}
+
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(biblio-title)$[title=$biblio-title$]
+$endif$
+
+$endif$
+$for(include-after)$
+$include-after$
+$endfor$
+
+\end{document}

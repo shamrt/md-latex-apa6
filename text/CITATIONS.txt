@@ -1,0 +1,13 @@
+# Pandoc with citeproc-hs
+
+-   [@nonexistent]
+
+-   @nonexistent
+
+-   @item1 says blah.
+
+-   @item1 [p. 30] says blah.
+
+-   @item1 [p. 30, with suffix] says blah.
+
+-   @item1 [-@item2 p. 30; see also @item3] says blah.
