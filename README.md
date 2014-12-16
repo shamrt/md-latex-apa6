@@ -1,7 +1,7 @@
 md-latex-apa6
 ==============
 
-A personal template for writing essays and manuscripts in MultiMarkdown, then converting to LaTeX (esp. APA style [6th edition]).
+A personal template for writing essays and manuscripts in pandoc-style Markdown, then converting to LaTeX (esp. APA style [6th edition]).
 
 The intention is to clone this repository in order to get started on new manuscripts as quickly as possible.
 
