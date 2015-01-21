@@ -21,7 +21,7 @@ abstract: |
 keywords: [Lorem ipsum, dolor, sit amet, consectetur adipisicing]
 
 # References
-refs: etc/biblio.bib
+refs: etc/references.bib
 
 # Citation styles
 csl_url: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
