@@ -2,19 +2,24 @@
 
 % Use default packages for APA setup
 \usepackage{fancyvrb}           % Allow \verbatim et al. in footnotes
-\VerbatimFootnotes % allows verbatim text in footnotes
+\VerbatimFootnotes              % Allow verbatim text in footnotes
 
-\usepackage{longtable, booktabs} % Better tables
+\usepackage{tabularx, rotating} % Better table
 \usepackage{tabulary}           % Support longer table cells
 \usepackage[utf8]{inputenc}     % For UTF-8 support
 \usepackage[T1]{fontenc}        % Use T1 font encoding for accented characters
 \usepackage{color}              % Allow for color (annotations)
 \usepackage{url}                % Allow for URLs
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
+\usepackage{fixltx2e}           % Provide \textsubscript
+
+% Allow for alternate row colors in tables
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\definecolor{light-gray}{gray}{0.95}
 
 % Graphics
 \usepackage{graphicx}
+\graphicspath{ {./media/} }     % Set default graphics path
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -49,11 +54,11 @@ $if(natbib)$
 $endif$
 
 \ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
+\usepackage[setpagesize=false, % page size defined by xetex
+            unicode=false, % unicode breaks when used with xetex
+            xetex]{hyperref}
 \else
-  \usepackage[unicode=true]{hyperref}
+\usepackage[unicode=true]{hyperref}
 \fi
 
 \hypersetup{breaklinks=true,
@@ -107,15 +112,15 @@ $endif$
 $if(manuscript)$
 \note{
 \begin{flushleft}
-$author$ \\
-$if(affiliation)$$affiliation$ \\$endif$
-$if(address)$$address$ \\$endif$
-$if(email)$Email: $email$ \\$endif$
-$if(date)$
-$date$
-$else$
-\today
-$endif$
+  $author$ \\
+  $if(affiliation)$$affiliation$ \\$endif$
+  $if(address)$$address$ \\$endif$
+  $if(email)$Email: $email$ \\$endif$
+  $if(date)$
+  $date$
+  $else$
+  \today
+  $endif$
 \end{flushleft}
 }
 $else$
@@ -134,7 +139,7 @@ $endif$
 \keywords{$for(keywords)$$keywords$$sep$, $endfor$}
 
 $for(header-includes)$
-  $header-includes$
+$header-includes$
 $endfor$
 
 % Main matter
