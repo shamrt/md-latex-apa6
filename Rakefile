@@ -17,12 +17,11 @@ TEX_APA_HEADER = "#{TEMPLATES_TEX_APA}header.tex"
 TEX_APA_DOC = "#{TEMPLATES_TEX_APA}begin-doc.tex"
 TEX_APA_FOOTER = "#{TEMPLATES_TEX_APA}footer.tex"
 
-# TODO: make task that auto-injects word count into MD master file
-REPORT_WORD_COUNT = `detex #{MASTER_TEX_FILE} | wc -w`.split[-2]
 
+task :default => [:build]
 
-# task :default => [:test]
-task :default => [:merge, :md2tex, :tex2pdf, :skim]
+desc "Build and view PDF report"
+task :build => [:merge, :md2tex, :tex2pdf, :skim]
 
 desc "Download APA styles (version 6) CSL file"
 task :csl do
@@ -45,27 +44,21 @@ task :merge do
     RakeTasks.merge("./text/index.yml", MASTER_MD_FILE)
 end
 
-desc "Convert master multimarkdown file to LaTeX."
+desc "Convert master markdown file to LaTeX."
 task :md2tex do
     sh """pandoc --smart --standalone \
         --template #{TEX_TEMPLATE} \
+        --parse-raw \
         --bibliography #{OPTS['refs']} --natbib -V biblio-style:apa \
         #{CONFIG} \
         #{MASTER_MD_FILE} \
         --output=#{MASTER_TEX_FILE}"""
-    # sh """pandoc --smart --standalone \
-    #     --variable=biblio-style:#{OPTS['csl']} \
-    #     --biblio #{OPTS['refs']} --csl #{OPTS['csl']} \
-    #     --output=#{MASTER_TEX_FILE} #{MASTER_MD_FILE}"""
 end
 
-desc "Convert master multimarkdown file to DOCX."
+desc "Convert master markdown file to DOCX."
 task :md2doc do
     sh """pandoc --smart \
         --output=#{REPORT_NAME}.docx #{MASTER_MD_FILE}"""
-    # sh """pandoc --smart \
-    # --reference-docx=reference.docx \
-    # --output=#{REPORT_NAME}.docx #{MASTER_MD_FILE}"""
 end
 
 desc "Convert master LaTeX file to PDF."
@@ -86,10 +79,10 @@ end
 
 desc "Clean LaTeX metadata files."
 task :clean do
-    sh "latexmk -c"
+    sh "cd #{BUILD_DIR}; latexmk -c"
 end
 
-desc "Watch text files for changes and regenerate master MMD file, as appropriate."
+desc "Watch text files for changes and regenerate master markdown file, as appropriate."
 task :watch do
     sh "fswatch ./text/. 'rake merge'"
 end
