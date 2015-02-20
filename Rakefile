@@ -7,9 +7,17 @@ OPTS = File.open(CONFIG, mode='r') { |f| YAML.load(f) }
 
 REPORT_NAME = OPTS['report_name']
 BUILD_DIR = "build"
+
 MASTER_MD_FILE = "#{BUILD_DIR}/#{REPORT_NAME}.md"
 MASTER_TEX_FILE = "#{BUILD_DIR}/#{REPORT_NAME}.tex"
 MASTER_PDF_FILE = "#{BUILD_DIR}/#{REPORT_NAME}.pdf"
+MASTER_DOC_FILE = "#{BUILD_DIR}/#{REPORT_NAME}.docx"
+
+ANALYSIS_R    = "app/analysis.r"
+RESULTS_RMD  = "app/results.rmd"
+RESULTS_MD   = "text/results.md"
+
+DOC_TEMPLATE='templates/apa6_man.docx'
 
 TEX_TEMPLATE='templates/apa6.tex'
 TEMPLATES_TEX_APA = "templates/tex/apa-"
@@ -56,9 +64,15 @@ task :md2tex do
 end
 
 desc "Convert master markdown file to DOCX."
-task :md2doc do
-    sh """pandoc --smart \
-        --output=#{REPORT_NAME}.docx #{MASTER_MD_FILE}"""
+task :md2docx => [:merge, :md2tex] do
+    sh """pandoc --smart --standalone \
+        --parse-raw \
+        --reference-docx=#{DOC_TEMPLATE} \
+        --bibliography=#{OPTS['refs']} \
+        --csl=#{OPTS['csl']} \
+        #{CONFIG} \
+        #{MASTER_MD_FILE} --output=#{MASTER_DOC_FILE}
+        """
 end
 
 desc "Convert master LaTeX file to PDF."
@@ -67,9 +81,14 @@ task :tex2pdf do
     sh "bibtex #{BUILD_DIR}/#{REPORT_NAME}.aux"
     sh "pdflatex -output-directory #{BUILD_DIR} #{MASTER_TEX_FILE}"
     sh "pdflatex -output-directory #{BUILD_DIR} #{MASTER_TEX_FILE}"
-    # sh """pandoc --standalone --smart \
-    #     #{MASTER_TEX_FILE} \
-    #     -o #{MASTER_PDF_FILE}"""
+end
+
+desc "Convert RMD files to MD"
+task :rmd2md do
+    sh """Rscript \
+    -e \"require(rmarkdown); source('#{ANALYSIS_R}')\" \
+    -e  \"render(input = '#{RESULTS_RMD}', output_file = '../#{RESULTS_MD}')\" \
+    """
 end
 
 desc "Open report in Skim.app"
