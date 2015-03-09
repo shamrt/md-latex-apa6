@@ -1,3 +1,5 @@
+\epigraph{‘Tis impossible to be sure of any thing but Death and Taxes.}{--- Christopher Bullock, \textit{The Cobler of Preston}, 1716}
+
 # Pandoc with citeproc-hs
 
 -   [@nonexistent]

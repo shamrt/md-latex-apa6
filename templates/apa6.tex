@@ -13,6 +13,15 @@
 \usepackage{ifxetex,ifluatex}
 \usepackage{fixltx2e}           % Provide \textsubscript
 
+% Allow for epigraphs (in APA 6 format)
+\usepackage{epigraph}
+\newenvironment{apaepistyle}{\setlength{\parindent}{1in}}{}
+\renewcommand{\epigraphflush}{apaepistyle}
+\renewcommand{\sourceflush}{flushright}
+\renewcommand{\epigraphrule}{0pt}
+\renewcommand{\epigraphwidth}{0.95\textwidth}
+\renewcommand{\epigraphsize}{\normalsize}
+
 % Allow for alternate row colors in tables
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \definecolor{light-gray}{gray}{0.95}
