@@ -14,8 +14,11 @@ MASTER_PDF_FILE = "#{BUILD_DIR}/#{REPORT_NAME}.pdf"
 MASTER_DOC_FILE = "#{BUILD_DIR}/#{REPORT_NAME}.docx"
 
 ANALYSIS_R    = "app/analysis.r"
-RESULTS_RMD  = "app/results.rmd"
-RESULTS_MD   = "text/results.md"
+
+R_LIBRARIES = ["rmarkdown", "pander"]
+RMD_TO_MD_FILES = [
+    {rmd: "", md: ""}
+]
 
 DOC_TEMPLATE='templates/apa6_man.docx'
 
@@ -85,10 +88,19 @@ end
 
 desc "Convert RMD files to MD"
 task :rmd2md do
-    sh """Rscript \
-    -e \"require(rmarkdown); source('#{ANALYSIS_R}')\" \
-    -e  \"render(input = '#{RESULTS_RMD}', output_file = '../#{RESULTS_MD}')\" \
-    """
+    rscript_cmd = "Rscript "
+
+    R_LIBRARIES.each do |lib|
+        rscript_cmd << "-e \"library('#{lib}')\" "
+    end
+
+    RMD_TO_MD_FILES.each do |file|
+        _rmd_file = File.expand_path(file[:rmd])
+        _md_file = File.expand_path(file[:md])
+        rscript_cmd << "-e \"render(input = '#{_rmd_file}', output_file = '#{_md_file}')\" "
+    end
+
+    sh rscript_cmd
 end
 
 desc "Open report in Skim.app"
